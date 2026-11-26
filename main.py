@@ -14,6 +14,8 @@ something a commentator would have to announce with a straight face.
 
 import os
 
+MAX_LENGTH = 200
+
 ENTRY = (
     "Speed-reading terms and conditions: athletes scroll forty pages "
     "of legal text, then click 'I agree' without reading a word."
@@ -21,6 +23,10 @@ ENTRY = (
 
 
 def main() -> None:
+    if "\n" in ENTRY or "\r" in ENTRY:
+        raise ValueError("entry must be a single line")
+    if len(ENTRY) > MAX_LENGTH:
+        raise ValueError(f"entry is {len(ENTRY)} chars, over the {MAX_LENGTH} limit")
     output_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(output_dir, exist_ok=True)
     path = os.path.join(output_dir, "entry.txt")
